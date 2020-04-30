@@ -7,7 +7,7 @@ from IPython.core.display import clear_output
 from warnings import warn
 
 # defina page for the url
-pages = [p * 50 + 1 for p in range(2)]
+pages = [p * 50 + 1 for p in range(72)]
 
 # preparing the monitoring of the loop
 start_time = time()
@@ -42,27 +42,28 @@ for p in pages:
 
     for movie in movies:
         # get title & year
-        if movie.find("div", class_="inline-block ratings-metascore") is not None:
-            title = movie.h3.text
-            title = title.replace("\n", " ").split()
-            title.remove(title[0])
-            year = title.pop(-1)
-            title = " ".join(title)
+        title = movie.h3.text
+        title = title.replace("\n", " ").split()
+        title.remove(title[0])
+        year = title.pop(-1)
+        title = " ".join(title)
 
-            titles.append(title)
-            years.append(year)
+        titles.append(title)
+        years.append(year)
 
-            # get imdb rating
-            imdb_rating = float(movie.find("div", class_="inline-block ratings-imdb-rating").strong.text)
-            imdb_ratings.append(imdb_rating)
-
+        # get imdb rating
+        imdb_rating = float(movie.find("div", class_="inline-block ratings-imdb-rating").strong.text)
+        imdb_ratings.append(imdb_rating)
+        try:
             # get metascore
             m_score = float(movie.find("div", class_="inline-block ratings-metascore").span.text)
             metascores.append(m_score)
+        except:
+            metascores.append(None)
 
-            # get votes
-            vote = movie.find("span", attrs={"name": "nv"})["data-value"]
-            votes.append(vote)
+        # get votes
+        vote = movie.find("span", attrs={"name": "nv"})["data-value"]
+        votes.append(vote)
 
 df = pd.DataFrame({
     'titles': titles,
