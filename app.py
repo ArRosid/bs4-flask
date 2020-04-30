@@ -2,7 +2,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import send_from_directory
-from scraper import *
+from proxy_scraper import *
 
 app = Flask(__name__)
 
